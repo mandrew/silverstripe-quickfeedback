@@ -8,6 +8,9 @@
 		"name": "Michael Andrewartha",
 		"email": "michael@silverstripe.com"
 	}],
+	"extra": {
+		"installer-name": "quickfeedback"
+	},
 	"require": {
 		"silverstripe/framework": "~3.1", 
 		"silverstripe/cms": "~3.1"

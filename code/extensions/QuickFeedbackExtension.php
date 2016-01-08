@@ -1,6 +1,6 @@
 <?php
 
-class FeedbackForm extends Form {
+class QuickFeedbackExtension extends DataExtension {
 
 	private static $allowed_actions = array(
 		'QuickFeedbackForm'
@@ -11,16 +11,19 @@ class FeedbackForm extends Form {
 	 */
 	public function QuickFeedbackForm() {
 		$form = Form::create(
-			$this,
+			$this->owner,
 			'QuickFeedbackForm',
 			FieldList::create(
-				OptionsetField::create('Rating'),
+				LiteralField::create("RatingTitle", "<h4>Was this article helpful?</h4>"),
+				ButtonGroupField::create('Rating', '', array(
+					"1" => "Yes",
+					"0" => "No",
+				)),
 				TextareaField::create('Comment','Comment')
 			),
 			FieldList::create(
 				FormAction::create('doSubmit','Submit')
-			),
-			RequiredFields::create('Rating')
+			)
 		);
 
 		return $form;
@@ -31,13 +34,14 @@ class FeedbackForm extends Form {
 	 */
 	public function doSubmit($data, $form) {
 		$feedback = Feedback::create();
-		$feedback->Name = $data['Rating'];
+		$feedback->Rating = $data['Rating'];
 		$feedback->Comment = $data['Comment'];
-		$feedback->URL = $this->URLSegment;
-		$comment->write();
+		$feedback->URL = $this->owner->URLSegment;
+		$feedback->write();
 
 		$form->sessionMessage('Thanks for your comment!','good');
 
-		return $this->redirectBack();
+		return $this->owner->redirect( Director::baseURL() . $this->owner->URLSegment . "/?success=1");
 	}
+
 }
