@@ -4,7 +4,7 @@ class Feedback extends DataObject
 	static $db = array(
 		'Rating' => 'Boolean',
 		'Comment' => 'Text',
-		'URL' => 'Varchar'
+		'URL' => 'Text'
 	);
 
 	static $has_one = array(

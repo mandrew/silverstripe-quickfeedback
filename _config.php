@@ -1,0 +1,4 @@
+<?php
+
+define('SILVERSTRIPE_QUICKFEEDBACK_PATH', __DIR__);
+define('SILVERSTRIPE_QUICKFEEDBACK_DIR', basename(__DIR__));
