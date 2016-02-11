@@ -1,21 +1,29 @@
 <?php
 class Feedback extends DataObject
 {
-	static $db = array(
+	/**
+	 * @var array
+	 */
+	public static $db = array(
 		'Rating' => 'Boolean',
 		'Comment' => 'Text',
-		'URL' => 'Text'
+		'URL' => 'Text',
+		'IP' => 'Text'
 	);
 
-	static $has_one = array(
+	/**
+	 * @var array
+	 */
+	public static $has_one = array(
 		'Page' => 'SiteTree'
 	);
 
-
-	static $summary_fields = array(
+	/**
+	 * @var array
+	 */
+	public static $summary_fields = array(
 		'Rating',
 		'Comment',
 		'URL'
 	);
-
 }
