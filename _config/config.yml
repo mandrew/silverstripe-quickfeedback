@@ -7,3 +7,6 @@ After:
 Controller:
   extensions:
     - QuickFeedbackExtension
+
+QuickFeedbackExtension:
+  rate_limit: 3

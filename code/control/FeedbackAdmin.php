@@ -1,16 +1,24 @@
 <?php
 class FeedbackAdmin extends ModelAdmin {
-	
-	private static $menu_title = "Feedback";
-	private static $url_segment = "feedback";
+	/**
+	 * @var string
+	 */
+	private static $menu_title = 'Feedback';
 
+	/**
+	 * @var string
+	 */
+	private static $url_segment = 'feedback';
+
+	/**
+	 * @var array
+	 */
 	static $managed_models = array(
 		'Feedback'
 	);
 
 	/**
-	 * Don't show the Import from CSV form
+	 * @var bool
 	 */
 	public $showImportForm = false;
-	
 }
