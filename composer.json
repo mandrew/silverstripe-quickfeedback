@@ -5,19 +5,13 @@
 		"name": "Michael Andrewartha",
 		"email": "michael@silverstripe.com"
 	}],
-	"keywords": ["silverstripe","feedback","member"],
+	"keywords": ["silverstripe", "feedback", "member"],
 	"type": "silverstripe-module",
 	"license": "BSD-3-Clause",
 	"require": {
-        "silverstripe/cms": "^3.2",
-        "silverstripe/framework": "^3.2",
+        	"silverstripe/framework": "^3.2"
 	},
 	"extra": {
 		"installer-name": "quickfeedback"
-	},
-	"config": {
-        "process-timeout": 600
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+	}
 }
