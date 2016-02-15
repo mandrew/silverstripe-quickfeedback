@@ -32,7 +32,7 @@ class QuickFeedbackExtension extends DataExtension {
 				'1' => _t('QuickFeedback.Yes', 'Yes'),
 				'0' => _t('QuickFeedback.No', 'No'),
 			)),
-			TextareaField::create('Comment', _t('QuickFeedback.Comment', 'Comment'))
+			TextareaField::create('Comment', _t('QuickFeedback.Comment', "<strong>Sorry about that.</strong> How can we make it better?"))
 		);
 
 		if ((bool) Config::inst()->get('QuickFeedbackExtension', 'redirect_field')) {
