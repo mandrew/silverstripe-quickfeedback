@@ -9,6 +9,13 @@ class QuickFeedbackExtension extends DataExtension {
 	public static $rate_limit = 3;
 
 	/**
+	 * Embed the redirect target.
+	 *
+	 * @var bool
+	 */
+	public static $redirect_field = false;
+
+	/**
 	 * @var array
 	 */
 	private static $allowed_actions = array(
@@ -19,17 +26,25 @@ class QuickFeedbackExtension extends DataExtension {
 	 * @return Form
 	 */
 	public function QuickFeedbackForm() {
+		$fields = FieldList::create(
+			LiteralField::create('RatingTitle', _t('QuickFeedback.Title', '<h4>Was this article helpful?</h4>')),
+			ButtonGroupField::create('Rating', '', array(
+				'1' => _t('QuickFeedback.Yes', 'Yes'),
+				'0' => _t('QuickFeedback.No', 'No'),
+			)),
+			TextareaField::create('Comment', _t('QuickFeedback.Comment', 'Comment'))
+		);
+
+		if ((bool) Config::inst()->get('QuickFeedbackExtension', 'redirect_field')) {
+			$fields->push(
+				HiddenField::create('Redirect', null, $_SERVER['REQUEST_URI'])
+			);
+		}
+
 		$form = Form::create(
 			$this->owner,
 			'QuickFeedbackForm',
-			FieldList::create(
-				LiteralField::create('RatingTitle', _t('QuickFeedback.Title', '<h4>Was this article helpful?</h4>')),
-				ButtonGroupField::create('Rating', '', array(
-					'1' => _t('QuickFeedback.Yes', 'Yes'),
-					'0' => _t('QuickFeedback.No', 'No'),
-				)),
-				TextareaField::create('Comment', _t('QuickFeedback.Comment', 'Comment'))
-			),
+			$fields,
 			FieldList::create(
 				FormAction::create('doSubmit', _t('QuickFeedback.Submit', 'Submit'))
 			)
@@ -46,6 +61,12 @@ class QuickFeedbackExtension extends DataExtension {
 	 */
 	public function doSubmit($data, $form) {
 		$controller = Controller::curr();
+
+		$redirect = Director::baseURL() . $this->owner->URLSegment;
+
+		if ((bool) Config::inst()->get('QuickFeedbackExtension', 'redirect_field') && isset($data['Redirect']) && Director::is_site_url($data['Redirect'])) {
+			$redirect = Director::absoluteURL($data['Redirect'], true);
+		}
 
 		if (!$controller) {
 			goto error;
@@ -82,19 +103,31 @@ class QuickFeedbackExtension extends DataExtension {
 		$feedback = Feedback::create();
 		$feedback->Rating = $data['Rating'];
 		$feedback->Comment = $data['Comment'];
-		$feedback->URL = $this->owner->URLSegment;
 		$feedback->IP = $request->getIP();
+
+		if (!empty($this->owner->ID)) {
+			$feedback->PageID = $this->owner->ID;
+		}
+
+		if (!empty($this->owner->URLSegment)) {
+			$feedback->URL = $this->owner->RelativeLink();
+		}
+
+		if ((bool) Config::inst()->get('QuickFeedbackExtension', 'redirect_field') && isset($data['Redirect'])) {
+			$feedback->URL = $data['Redirect'];
+		}
+
 		$feedback->write();
 
 		$form->sessionMessage(_t('QuickFeedback.ThanksMessage', 'Thanks for your comment!'),'good');
-		return $this->owner->redirect(Director::baseURL() . $this->owner->URLSegment . '?success=1');
+		return $this->owner->redirect($redirect . '?success=1');
 
 		error:
 			$form->sessionMessage(_t('QuickFeedback.ErrorMessage', 'An error occurred!'),'error');
-			return $this->owner->redirect(Director::baseURL() . $this->owner->URLSegment . '?error=1');
+			return $this->owner->redirect($redirect . '?error=1');
 
 		rate:
 			$form->sessionMessage(_t('QuickFeedback.RateMessage', 'Please wait a while before submitting!'),'error');
-			return $this->owner->redirect(Director::baseURL() . $this->owner->URLSegment . '?rate=1');
+			return $this->owner->redirect($redirect . '?rate=1');
 	}
 }
