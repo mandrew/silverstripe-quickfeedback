@@ -120,14 +120,14 @@ class QuickFeedbackExtension extends DataExtension {
 		$feedback->write();
 
 		$form->sessionMessage(_t('QuickFeedback.ThanksMessage', 'Thanks for your comment!'),'good');
-		return $this->owner->redirect($redirect . '?success=1');
+		return $this->owner->redirect($redirect . '?success=1#Form_QuickFeedbackForm');
 
 		error:
 			$form->sessionMessage(_t('QuickFeedback.ErrorMessage', 'An error occurred!'),'error');
-			return $this->owner->redirect($redirect . '?error=1');
+			return $this->owner->redirect($redirect . '?error=1#Form_QuickFeedbackForm');
 
 		rate:
 			$form->sessionMessage(_t('QuickFeedback.RateMessage', 'Please wait a while before submitting!'),'error');
-			return $this->owner->redirect($redirect . '?rate=1');
+			return $this->owner->redirect($redirect . '?rate=1#Form_QuickFeedbackForm');
 	}
 }
