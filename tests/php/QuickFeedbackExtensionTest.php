@@ -52,11 +52,11 @@ class QuickFeedbackExtensionTest extends SapphireTest {
 
         $time = time();
 
-        $data = [
+        $data = array(
             'SecurityID' => $token[1],
             'Rating' => '0',
             'Comment' => 'comment at ' . $time,
-        ];
+        );
 
         $controller->handleRequest(new SS_HTTPRequest('POST', $action, array(), $data), DataModel::inst());
 
