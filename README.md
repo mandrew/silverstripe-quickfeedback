@@ -20,6 +20,8 @@ This module is configured so that you can use it just by adding something to you
 
 A controller extension is added to the base `Controller` class, which means this should be available wherever you try it.
 
+If you're having trouble with URLs. stored in the database, you can enable `QuickFeedbackExtension → redirect_field: true` in your YAML config.
+
 ## Versioning
 
 This library follows [Semver](http://semver.org). According to Semver, you will be able to upgrade to any minor or patch version of this library without any breaking changes to the public API. Semver also requires that we clearly define the public API for this library.
