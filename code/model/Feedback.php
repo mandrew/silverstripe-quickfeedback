@@ -14,13 +14,6 @@ class Feedback extends DataObject
 	/**
 	 * @var array
 	 */
-	public static $has_one = array(
-		'Page' => 'SiteTree'
-	);
-
-	/**
-	 * @var array
-	 */
 	public static $summary_fields = array(
 		'Rating',
 		'Comment',
