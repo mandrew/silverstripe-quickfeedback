@@ -19,4 +19,18 @@ class Feedback extends DataObject
 		'Comment',
 		'URL'
 	);
+	
+	public function canView($member = null) {
+        return Permission::check('CMS_ACCESS_FeedbackAdmin');
+    }
+    public function canEdit($member = null) {
+        return Permission::check('CMS_ACCESS_FeedbackAdmin');
+    }
+    public function canDelete($member = null) {
+        return Permission::check('CMS_ACCESS_FeedbackAdmin');
+    }
+    public function canCreate($member = null) {
+        return Permission::check('CMS_ACCESS_FeedbackAdmin');
+    }
+	
 }
