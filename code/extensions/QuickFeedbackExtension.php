@@ -26,6 +26,32 @@ class QuickFeedbackExtension extends DataExtension {
 	 * @return Form
 	 */
 	public function QuickFeedbackForm() {
+
+		// if DisplayFeedback returns 'hide' then hide form
+		$page = $this->owner;
+
+		if ($page->DisplayFeedback == 'hide') {
+			return false;
+		}
+
+		$previous = null;
+
+		while ($page->hasMethod("Parent") && $parent = $page->Parent()) {
+			if ($previous && $previous->ID == $parent->ID) {
+				break;
+			}
+
+			$previous = $parent;
+
+			if ($page->DisplayFeedback == 'show') {
+				break;
+			}
+
+			if ($parent->DisplayFeedback == 'hide') {
+				return false;
+			}
+		}
+
 		$fields = FieldList::create(
 			LiteralField::create('RatingTitle', _t('QuickFeedback.Title', '<h4>Was this article helpful?</h4>')),
 			ButtonGroupField::create('Rating', '', array(
