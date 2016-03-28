@@ -27,15 +27,28 @@ class QuickFeedbackExtension extends DataExtension {
 	 */
 	public function QuickFeedbackForm() {
 
-		// if HideFeedbackForm returns true then hide form
+		// if DisplayFeedback returns 'hide' then hide form
 		$page = $this->owner;
-		if($page->HideFeedbackForm) {
-			return false;
-		} else {
-			while($page->exists()) {
-				if($page->HideFeedbackForm) return false;
 
-				$page = $page->Parent();
+		if ($page->DisplayFeedback == 'hide') {
+			return false;
+		}
+
+		$previous = null;
+
+		while ($page->hasMethod("Parent") && $parent = $page->Parent()) {
+			if ($previous && $previous->ID == $parent->ID) {
+				break;
+			}
+
+			$previous = $parent;
+
+			if ($page->DisplayFeedback == 'show') {
+				break;
+			}
+
+			if ($parent->DisplayFeedback == 'hide') {
+				return false;
 			}
 		}
 

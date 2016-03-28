@@ -4,17 +4,14 @@ class FeedbackPageExtension extends DataExtension {
 	 * @var array
 	 */
 	public static $db = array(
-		'HideFeedbackForm' => 'Boolean'
+		'DisplayFeedback' => 'Enum("show,hide,inherit","inherit")',
 	);
 
     public function updateSettingsFields(FieldList $fields) {
     	$feedback = new FieldGroup(
-			CheckboxField::create('HideFeedbackForm', 'Hide form')
+			DropdownField::create('DisplayFeedback', '', singleton('Page')->dbObject('DisplayFeedback')->enumValues())
 		);
-        $fields->addFieldToTab("Root.Settings", $feedback->setTitle('Feedback'));
+
+        $fields->addFieldToTab("Root.Settings", $feedback->setTitle('Show feedback form?'));
 	}
-	
-	// public static function HideForm($this->) {
-	// 	return $this->owner->HideFeedbackForm;
-	// }
 }
