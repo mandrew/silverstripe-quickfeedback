@@ -62,7 +62,7 @@ class QuickFeedbackExtension extends DataExtension {
 	public function doSubmit($data, $form) {
 		$controller = Controller::curr();
 
-		$redirect = Director::baseURL() . $this->owner->URLSegment;
+		$redirect = $this->owner->AbsoluteLink();
 
 		if ((bool) Config::inst()->get('QuickFeedbackExtension', 'redirect_field') && isset($data['Redirect']) && Director::is_site_url($data['Redirect'])) {
 			$redirect = Director::absoluteURL($data['Redirect'], true);
